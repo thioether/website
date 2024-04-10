@@ -4,7 +4,7 @@ The test module provided by Salvo can help test Salvo's projects.
 
 [Latest Doc](https://docs.rs/salvo_core/latest/salvo_core/test/index.html)
 
-**Example:** 
+**Example:**
 
 ```rust
 use salvo::prelude::*;
@@ -35,12 +35,12 @@ mod tests {
     async fn test_hello_world() {
         let service = Service::new(super::route());
 
-        let content = TestClient::get(format!("http://127.0.0.1:5800/{}", name))
-            .send(service)
+        let content = TestClient::get(format!("http://127.0.0.1:5800/"))
+            .send(&service)
             .await
             .take_string()
             .await
-            .unwrap()
+            .unwrap();
         assert_eq!(content, "Hello World");
     }
 }

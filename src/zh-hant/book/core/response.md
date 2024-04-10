@@ -9,8 +9,7 @@ async fn hello_world(res: &mut Response) {
 }
 ```
 
-```Response``` 在服務器接收到客戶端請求後, 任何匹配到的 `Handler` 和中間件都可以向裏面寫入數據. 在某些情況下, 比如某個中間件希望阻止後續的中間件和 `Handler` 執行, 您可以使用 ```FlowCtrl```:
-
+在伺服器接收到客戶端請求後，任何匹配的 ```Handler``` 以及中間件都可以向 ```Response``` 中寫入數據。在特定情況下，例如當一個中間件想要阻止後續中間件和 `Handler` 的執行時，您可以使用 ```FlowCtrl```
 ```rust
 #[handler]
 async fn hello_world(res: &mut Response, ctrl: &mut FlowCtrl) {
@@ -65,3 +64,14 @@ async fn hello_world(res: &mut Response, ctrl: &mut FlowCtrl) {
     use salvo::http::StatusCode;
     res.status_code(StatusCode::BAD_REQUEST);
     ```
+
+## 重定向到其他URL
+- 使用 ```render``` 方法可以向 ```Response``` 寫入一個重定向回應，導航到一個新的URL。當你調用 Redirect::found 方法時，它會設置 HTTP 狀態碼為 302（Found），表示暫時重定向。
+```rust
+use salvo::prelude::*;
+
+#[handler]
+async fn redirect(res: &mut Response) {
+    res.render(Redirect::found("https://salvo.rs/"));
+}
+```
